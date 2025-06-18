@@ -6,6 +6,8 @@ import 'package:university_events/presentation/details_page/details_page.dart';
 import 'package:university_events/presentation/home_page/bloc/bloc.dart';
 import 'package:university_events/presentation/home_page/bloc/events.dart';
 import 'package:university_events/presentation/home_page/bloc/state.dart';
+import 'package:university_events/data/services/auth_service.dart'; 
+import 'package:university_events/presentation/login_page/login_page.dart'; 
 
 part 'card.dart';
 
@@ -17,6 +19,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
+  void _logout() async {
+    
+    final AuthService authService = context.read<AuthService>();
+    
+    await authService.deleteTokenAndUserId();
+    
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+          (route) => false, 
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +47,13 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 4,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white), 
+            onPressed: _logout, 
+            tooltip: 'Выйти из аккаунта', 
+          ),
+        ],
       ),
       body: const _Body(),
     );

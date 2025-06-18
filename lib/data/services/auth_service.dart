@@ -16,10 +16,15 @@ class AuthService {
     _dio.interceptors.add(PrettyDioLogger(responseBody: true, requestBody: true));
   }
 
+  Future<bool> autoLogin() async {
+    final token = await getToken();
+    final userId = await getUserId();
+    return token != null && userId != null;
+  }
+
   Future<void> saveToken(String token) async {
     await _storage.write(key: 'jwt_token', value: token);
   }
-
 
   Future<void> saveUserId(int id) async {
     await _storage.write(key: 'user_id', value: id.toString());
