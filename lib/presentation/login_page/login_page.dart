@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:university_events/data/services/auth_service.dart';
-import 'package:university_events/presentation/home_page/home_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,7 +13,16 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
-  final AuthService _authService = AuthService();
+
+  late AuthService _authService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+
+    _authService = context.read<AuthService>();
+  }
 
   String? _message;
   bool _isLoading = false;
@@ -79,6 +88,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _otpController.dispose();
+    super.dispose();
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Вход в приложение')),

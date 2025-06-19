@@ -43,6 +43,10 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   fluttertoast: ^8.2.4
 
+  firebase_core: ^2.27.0 #
+
+  firebase_messaging: ^14.2.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

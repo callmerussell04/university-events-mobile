@@ -23,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   void _logout() async {
     
     final AuthService authService = context.read<AuthService>();
-    
-    await authService.deleteTokenAndUserId();
+
+    await authService.signOut();
     
     Navigator.pushAndRemoveUntil(
       context,

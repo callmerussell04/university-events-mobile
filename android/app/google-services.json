@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4019433856",
+    "project_id": "university-events-coursework",
+    "storage_bucket": "university-events-coursework.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4019433856:android:a1dba3f5d085c2df819165",
+        "android_client_info": {
+          "package_name": "com.university.university_events"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfX9oAx6BYooMIQlvBVQo7R5wFzSICrwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

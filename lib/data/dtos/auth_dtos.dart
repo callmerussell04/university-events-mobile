@@ -55,3 +55,13 @@ class OtpResendRequestDto {
     'username': username,
   };
 }
+
+class DeviceTokenDto {
+  final String? deviceToken;
+
+  DeviceTokenDto({required this.deviceToken});
+
+  Map<String, dynamic> toJson() => {
+    'deviceToken': deviceToken,
+  };
+}
