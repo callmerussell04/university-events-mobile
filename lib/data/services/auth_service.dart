@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:university_events/data/dtos/auth_dtos.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:university_events/utils/auth_interceptor.dart'; // Убедитесь, что этот импорт есть
+import 'package:university_events/utils/auth_interceptor.dart';
 
 class AuthService {
   final Dio _dio; // Dio для аутентификации (без интерсептора)
@@ -13,7 +13,7 @@ class AuthService {
 
   AuthService({required Dio authenticatedDio})
       : _dio = Dio(BaseOptions(
-    baseUrl: 'http://192.168.1.212:8080/api/1.0/auth', // Базовый URL для аутентификации
+    baseUrl: 'http://192.168.113.247:8080/api/1.0/auth',
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
     contentType: Headers.jsonContentType,
@@ -65,7 +65,7 @@ class AuthService {
 
   Future<JwtResponse> signIn(String username, String password, {String? otp}) async {
     try {
-      final response = await _dio.post( // Используем _dio для signIn
+      final response = await _dio.post(
         '/signin',
         data: SigninRequestDto(username: username, password: password, otp: otp).toJson(),
       );
@@ -116,22 +116,21 @@ class AuthService {
 
     try {
       await _authenticatedDio.post(
-        'http://192.168.1.212:8080/api/1.0/user/$userId/device-token',
+        'http://192.168.113.247:8080/api/1.0/user/$userId/device-token',
         data: DeviceTokenDto(deviceToken: token).toJson(),
       );
       print('FCM Token successfully sent to backend for userId: $userId');
     } on DioException catch (e) {
       print('Error sending FCM Token to backend: ${e.response?.data ?? e.message}');
-      // Обработайте ошибку отправки токена (например, повторная попытка, логирование)
     } catch (e) {
       print('Unexpected error sending FCM Token: $e');
     }
   }
   Future<void> signOut() async {
-    final userId = await getUserId(); // <--- Добавлено: Удаляем FCM-токен при выходе
+    final userId = await getUserId();
     try {
       await _authenticatedDio.post(
-        'http://192.168.1.212:8080/api/1.0/user/$userId/device-token',
+        'http://192.168.113.247:8080/api/1.0/user/$userId/device-token',
         data: DeviceTokenDto(deviceToken: null).toJson(),
       );
       print('FCM Token successfully cleared for userId: $userId');
@@ -140,7 +139,7 @@ class AuthService {
     } catch (e) {
       print('Unexpected error clearing FCM Token: $e');
     }
-    await deleteTokenAndUserId(); // Удаляем токены доступа и user ID
+    await deleteTokenAndUserId();
     await deleteFCMTokenLocally();
     print('User signed out. Authentication tokens and user ID cleared, FCM token deleted.');
   }

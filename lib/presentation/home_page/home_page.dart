@@ -106,7 +106,9 @@ class _BodyState extends State<_Body> {
         children: [
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) => state.isLoading
-                ? const CircularProgressIndicator()
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
                 : Expanded(
               child: RefreshIndicator(
                 onRefresh: _onRefresh,

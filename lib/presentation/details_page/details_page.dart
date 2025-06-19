@@ -46,7 +46,7 @@ class _DetailsPageState extends State<DetailsPage> {
       if (success) {
         _currentInvitationStatus = 'Посетил';
         _statusChanged = true;
-        Fluttertoast.showToast(msg: 'Статус обновлен на Посетил!', toastLength: Toast.LENGTH_SHORT);
+        Fluttertoast.showToast(msg: 'Статус обновлен на Посетил', toastLength: Toast.LENGTH_SHORT);
       } else {
         Fluttertoast.showToast(msg: 'Не удалось обновить статус.', toastLength: Toast.LENGTH_SHORT);
       }
@@ -56,16 +56,23 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   void dispose() {
-
     Navigator.pop(context, _statusChanged);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Определяем, должен ли отображаться чип "Мероприятие пройдено!"
+    final bool showCompletedChip = _currentInvitationStatus == 'Посетил';
+
+    // Определяем, должна ли отображаться кнопка "Отметить как пройденное"
+    final bool showMarkAsCompletedButton =
+        _currentInvitationStatus != 'Посетил' &&
+            (widget.data.status == 'В процессе' || widget.data.status == 'Завершено');
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Детали Мероприятия'),
+        title: const Text('Детали мероприятия'),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
       ),
@@ -90,7 +97,7 @@ class _DetailsPageState extends State<DetailsPage> {
               _buildInfoRow(
                 context,
                 icon: Icons.event_note,
-                label: 'Статус события:',
+                label: 'Статус мероприятия:',
                 value: widget.data.status,
               ),
               const Divider(),
@@ -125,11 +132,12 @@ class _DetailsPageState extends State<DetailsPage> {
               _buildInfoRow(
                 context,
                 icon: Icons.how_to_reg,
-                label: 'Статус приглашения:',
+                label: 'Статус прохождения:',
                 value: _currentInvitationStatus,
               ),
               const SizedBox(height: 32.0),
-              if (_currentInvitationStatus != 'Посетил')
+              // Условное отображение кнопки "Отметить как пройденное"
+              if (showMarkAsCompletedButton)
                 Center(
                   child: _isUpdatingStatus
                       ? const CircularProgressIndicator()
@@ -148,7 +156,8 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                 ),
-              if (_currentInvitationStatus == 'Посетил')
+              // Условное отображение чипа "Мероприятие пройдено!"
+              if (showCompletedChip)
                 const Center(
                   child: Chip(
                     label: Text('Мероприятие пройдено!'),
